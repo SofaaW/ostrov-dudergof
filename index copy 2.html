@@ -813,7 +813,14 @@
       max-height: calc(100vh - 24px - env(safe-area-inset-top));
     }
   }
-
+    @media (max-width: 600px){
+  .burger{
+    position: fixed;
+    top: calc(12px + env(safe-area-inset-top));
+    right: 12px;
+    z-index: 999; /* обязательно */
+  }
+}
   </style>
 </head>
 
@@ -1243,3 +1250,4 @@
   </script>
 </body>
 </html>
+
