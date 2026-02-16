@@ -935,6 +935,12 @@
         padding: 20px;
       }
     }
+    /* ===== Второй блок ABOUT: нормальная ширина текста на мобильном ===== */
+    @media (max-width: 600px){
+      .about-card--wide-text .about-text p{
+        max-width: none;   /* убираем узкую колонку */
+      }
+    }
 
   </style>
 </head>
@@ -1044,8 +1050,7 @@
           <img src="assets/photo_main.jpg" alt="Фото 3">
         </div>
       </article>
-
-            <article class="card about-card" aria-label="Где это?">
+            <article class="card about-card about-card--wide-text" aria-label="Где это?">
         <div class="about-text">
           <h4>Где это?</h4>
           <p>
@@ -1448,6 +1453,7 @@
   </script>
 </body>
 </html>
+
 
 
 
