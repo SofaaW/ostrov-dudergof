@@ -982,7 +982,20 @@
     .about-card--wide-text .about-text p{
       max-width: none;
     }
-
+    #amphitheater .section__desc{
+      max-width: none;
+      text-align: justify;
+      hyphens: auto;
+    }
+    /* ===== "Где это?" — не узко на телефоне (убираем огромные отступы) ===== */
+    @media (max-width: 600px){
+      .about-card--wide-text .about-text{
+        padding: 20px;   /* вместо 60px */
+      }
+      .about-card--wide-text .about-text p{
+        max-width: none; /* на всякий случай оставляем */
+      }
+    }
 
   </style>
 </head>
@@ -1523,6 +1536,7 @@
   </script>
 </body>
 </html>
+
 
 
 
