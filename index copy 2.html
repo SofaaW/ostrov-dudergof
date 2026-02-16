@@ -1,0 +1,1209 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Остров Дудергоф</title>
+  <meta name="description" content="Большая прогулочная тропа по Пулковским и Дудергофским высотам: основной маршрут и тематические треки." />
+
+  <style>
+    /* =========================
+       Остров Дудергоф — стили (упрощено)
+       ========================= */
+
+    @font-face{
+      font-family: "Songer";
+      src: url("assets/fonts/Songer-Medium.woff2") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face{
+      font-family: "Intro";
+      src: url("assets/fonts/Intro-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root{
+      --c-blue: #227CEB;
+      --c-red:  #EB5642;
+      --c-sand: #E5D9CF;
+      --c-wood: #A27763;
+
+      --c-navy: #2B406B;
+      --c-sky:  #8FBEF9;
+      --c-sun:  #FFD37C;
+      --c-green:#1E886A;
+
+      --bg: #fbfaf8; /* <-- ОСНОВНОЙ ФОН САЙТА */
+      --text: #132033;
+      --muted: rgba(19, 32, 51, .72);
+      --card: #ffffff;
+      --stroke: rgba(43,64,107,.18);
+
+      --radius-lg: 0px;
+      --radius-md: 0px;
+
+      --shadow: 0 16px 40px rgba(19,32,51,.10);
+      --shadow-soft: 0 10px 26px rgba(19,32,51,.08);
+
+      --max: 1120px;
+
+      --font: "Intro", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      --font-title: "Songer", "Intro", ui-sans-serif, system-ui, sans-serif;
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--text);
+      background: var(--bg);
+    }
+
+    h1,h2,h3,.section__title,.track__name{ font-family: var(--font-title); }
+    a{ color:inherit; text-decoration:none; }
+    img{ max-width:100%; display:block; }
+
+    .container{
+      width: min(var(--max), calc(100% - 40px));
+      margin-inline:auto;
+    }
+
+    /* -------------------------
+       HERO
+       ------------------------- */
+    header.hero{
+      position:relative;
+      overflow:hidden;
+      border-bottom: 1px solid var(--stroke);
+      min-height: 420px;
+    }
+
+    .hero__bg{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg,
+          rgba(43,64,107,1) 0%,
+          rgba(43,64,107,.88) 15%,
+          rgba(43,64,107,.55) 35%,
+          rgba(43,64,107,.10) 55%,
+          rgba(43,64,107,0) 75%
+        ),
+        url("assets/hero-mountains.jpg") center/cover no-repeat;
+      filter: saturate(1.06) contrast(1.04);
+    }
+
+    .hero__overlay{
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(19,32,51,.28) 0%, rgba(19,32,51,.10) 48%, rgba(19,32,51,.02) 100%);
+      pointer-events:none;
+    }
+
+    .hero__wrap{
+      position:relative;
+      z-index:2;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      padding: 22px 0 0;
+      min-height: 420px;
+    }
+
+    .hero__brand{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding-top: 6px;
+    }
+
+    .hero__logo{
+      width: clamp(360px, 10vw, 640px);
+      height: clamp(360px, 10vw, 640px);
+      border-radius: 0;
+      background: transparent;
+      border: none;
+    }
+    .hero__logo img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+
+    /* -------------------------
+       Меню
+       ------------------------- */
+    .burger{
+      width:48px;
+      height:48px;
+      border-radius: 0;
+      border: 0px rgba(29, 62, 208, 0.5);
+      background: rgba(44, 74, 135, 0.8);
+      cursor:pointer;
+      display:inline-grid;
+      place-items:center;
+      margin-top: 2px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: background .18s ease, border-color .18s ease;
+      z-index: 100;
+    }
+
+    .burger span{
+      display:block;
+      width:22px;
+      height:2px;
+      background: #fff;
+      position:relative;
+      transition: transform .18s ease, background .18s ease, opacity .18s ease;
+    }
+
+    .burger span::before,
+    .burger span::after{
+      content:"";
+      position:absolute;
+      left:0;
+      width:22px;
+      height:2px;
+      background:#fff;
+      transition: transform .18s ease, top .18s ease, background .18s ease, opacity .18s ease;
+    }
+    .burger span::before{ top:-7px; }
+    .burger span::after{ top:7px; }
+
+    .burger:hover{
+      background: rgba(44, 74, 135);
+    }
+
+    .burger[aria-expanded="true"]{
+      background: rgba(255,255,255,.88);
+      border-color: rgba(43,64,107,.30);
+    }
+    .burger[aria-expanded="true"] span{
+      background: transparent;
+    }
+    .burger[aria-expanded="true"] span::before{
+      top:0;
+      transform: rotate(45deg);
+      background: #2B406B;
+    }
+    .burger[aria-expanded="true"] span::after{
+      top:0;
+      transform: rotate(-45deg);
+      background: #2B406B;
+    }
+
+    .menu-panel{
+      position: fixed;
+      top: 76px;
+      right: 200px;
+      width: min(360px, calc(100% - 32px));
+      max-height: calc(100vh - 32px);
+      overflow:auto;
+      background: rgba(255,255,255,.78);
+      box-shadow: var(--shadow);
+      padding: 0;
+      display:none;
+      z-index: 60;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .menu-panel[data-open="true"]{ display:block; }
+
+    .menu-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 12px 12px;
+      border: 0;
+      border-bottom: 2px solid rgba(43,64,107,.14);
+      transition: .16s ease;
+      background: transparent;
+      cursor:pointer;
+      font: inherit;
+      width:100%;
+      text-align:left;
+    }
+    .menu-item:hover{
+      background: rgba(43,64,107,.08);
+    }
+    .menu-item:last-of-type{
+      border-bottom: 0;
+    }
+
+    .menu-title{
+      font-family: var(--font-title);
+      font-weight: 500;
+      color: var(--c-navy);
+    }
+    .menu-hint{
+      font-family: var(--font);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .menu-sep{
+      height:1px;
+      background: rgba(43,64,107,.14);
+      margin: 0;
+      display: none;
+    }
+
+    .submenu{
+      display:none;
+      padding: 0;
+    }
+    .submenu[data-open="true"]{ display:block; }
+
+    .submenu a{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 10px 12px;
+      border: 0;
+      border-bottom: 1px solid rgba(43,64,107,.14);
+      transition: .16s ease;
+    }
+    .submenu a:hover{
+      background: rgba(43,64,107,.08);
+    }
+    .submenu a:last-child{
+      border-bottom: 1px solid rgba(43,64,107,.14);
+    }
+
+    .track-icon{
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      display: inline-block;
+      object-fit: contain;
+    }
+
+      /* =========================
+      TEAM / CREDITS
+      ========================= */
+    section#credits{
+      background: var(--c-navy);
+      padding: 28px 0;          /* узкая секция */
+    }
+    #credits .section__head{
+      margin-bottom: 14px;
+    }
+    #credits .section__title{
+      color: #fff;
+    }
+    #credits .section__desc{
+      color: rgba(255,255,255,.78);
+    }
+
+    .credits-row{
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    @media (max-width: 1100px){
+      .credits-row{ grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 700px){
+      .credits-row{ grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .credit{
+      text-align: center;
+      color: #fff;
+    }
+    .credit img{
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      display: block;
+    }
+    .credit figcaption{
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.35;
+      color: rgba(255,255,255,.85);
+    }
+
+    /* =========================
+      CONTACTS (без окон/карточек)
+      ========================= */
+    footer#contacts{
+      background: #fff;
+      border-top: 1px solid var(--stroke);
+      padding: 28px 0 40px;
+    }
+
+    .contacts-simple{
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+      color: var(--c-navy);
+      font-family: var(--font);
+    }
+
+    .contacts-simple a{
+      text-decoration: none;
+      color: inherit;
+    }
+    .contacts-simple a:hover{
+      text-decoration: underline;
+    }
+
+    .contacts-logos{
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .contacts-logos img{
+      height: 72px;
+      width: auto;
+      object-fit: contain;
+      display:block;
+    }
+
+    @media (max-width: 540px){
+      .contacts-logos img{ height: 46px; }
+    }
+
+
+    /* -------------------------
+       SECTIONS
+       ------------------------- */
+    section{ padding: 64px 0; }
+
+    .section__head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    .section__title{
+      margin:0;
+      font-size: 30px;
+      letter-spacing:-0.03em;
+      font-weight: 500;
+      color: var(--c-navy);
+    }
+    .section__desc{
+      margin:0;
+      color: var(--muted);
+      font-weight: 400;
+      line-height: 1.7;
+      max-width: 64ch;
+      font-family: var(--font);
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 980px){
+      .grid-2{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+    }
+    .card__body{ padding: 18px; }
+    .card__body h4{
+      margin:0 0 8px;
+      font-weight: 500;
+      letter-spacing:-0.02em;
+      color: var(--c-navy);
+      font-family: var(--font-title);
+    }
+    .card__body p{
+      margin:0;
+      color: var(--muted);
+      font-weight: 400;
+      line-height: 1.7;
+      font-family: var(--font);
+    }
+
+    .media{
+      aspect-ratio: 16/10;
+      background: rgba(43,64,107,.06);
+      border-bottom: 1px solid var(--stroke);
+      overflow:hidden;
+    }
+    .media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: saturate(1.02);
+      transform: scale(1.02);
+    }
+
+    /* -------------------------
+       ABOUT: карточка подстраивается под высоту фото
+       ------------------------- */
+    .about-card{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 980px){
+      .about-card{ grid-template-columns: 1fr; }
+    }
+
+    .about-text{
+      padding: 18px;
+    }
+    .about-text h4{
+      margin:0 0 8px;
+      font-weight: 500;
+      letter-spacing:-0.02em;
+      color: var(--c-navy);
+      font-family: var(--font-title);
+    }
+    .about-text p{
+      margin:0;
+      color: var(--muted);
+      font-weight: 400;
+      line-height: 1.7;
+      font-family: var(--font);
+    }
+
+    .about-media{
+      border-left: 1px solid var(--stroke);
+      background: rgba(43,64,107,.06);
+    }
+    @media (max-width: 980px){
+      .about-media{ border-left: 0; border-top: 1px solid var(--stroke); }
+    }
+
+    .about-media--two{
+      display:flex;
+      flex-direction:column;
+    }
+    .about-media img{
+      width:100%;
+      height:auto;
+      object-fit: contain;
+    }
+    .about-media--two img:first-child{
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    /* -------------------------
+       TRACKS: общий фон секции — слегка серый
+       ------------------------- */
+    section#tracks{
+      background: #f2f3f5;
+    }
+
+    /* -------------------------
+      TRACKS: сетка
+      ------------------------- */
+    .tracks{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 1100px){
+      .tracks{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 540px){
+      .tracks{ grid-template-columns: 1fr; }
+    }
+
+    /* -------------------------
+      TRACKS: кнопки/карточки — компактные, центр по вертикали, БЕЗ ОКАНТОВКИ
+      ------------------------- */
+    .track{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      padding: 12px 14px;
+      min-height: 300px;
+
+      background: #fff;
+      border: none;                 /* <-- убрали окантовку */
+      box-shadow: var(--shadow-soft);
+      transition: .16s ease;
+      overflow:hidden;
+    }
+
+    .track:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .track__top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      width: 100%;
+      margin: 0;
+    }
+
+    .track__name{
+      margin:0;
+      font-size: 25px;
+      line-height: 1.15;
+      font-weight: 500;
+      letter-spacing:-0.02em;
+      color: var(--c-navy);
+    }
+
+    .track__mark{
+      width:66px;
+      height:66px;
+      border: none;
+      background: none;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      flex: 0 0 auto;
+    }
+    .track__mark img{
+      width: 66px;
+      height: 66px;
+      object-fit: contain;
+      display:block;
+      filter:
+        drop-shadow(0 0 1px #fff)
+        drop-shadow(0 0px 2px rgba(255, 255, 255));
+    }
+
+    /* Оверлей для читаемости текста на фото */
+    .track--main::before,
+    .track--nature::before,
+    .track--history::before,
+    .track--promka::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: rgba(19,32,51,.45);
+      z-index:0;
+    }
+
+    /* Контент поверх оверлея */
+    .track--main > *,
+    .track--nature > *,
+    .track--history > *,
+    .track--promka > *{
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Текст на фото — белый */
+    .track--main .track__name,
+    .track--nature .track__name,
+    .track--history .track__name,
+    .track--promka .track__name{
+      color:#fff;
+    }
+
+    /* Фон-картинки по трекам */
+    .track--main{
+      background: url("assets/background1.png") center/cover no-repeat;
+    }
+    .track--nature{
+      background: url("assets/background2.jpg") center/cover no-repeat;
+    }
+    .track--history{
+      background: url("assets/background3.jpg") center/cover no-repeat;
+    }
+    .track--promka{
+      background: url("assets/background.png") center/cover no-repeat;
+    }
+
+    /* подпись под треками */
+    .tracks-desc-under{
+      margin-top: 14px;
+      border-left: 3px solid rgba(43,64,107,.35);
+      padding-left: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-family: var(--font);
+      background: rgba(255,255,255,.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
+
+    /* -------------------------
+       Другие проекты
+       ------------------------- */
+    .projects{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 12px 14px;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      font-weight: 400;
+      color: var(--c-navy);
+      cursor:pointer;
+      transition: .16s ease;
+      font-family: var(--font);
+    }
+    .pill:hover{
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-soft);
+      border-color: rgba(43,64,107,.30);
+    }
+    .pill--active{
+      background: rgba(43,64,107,.10);
+      border-color: rgba(43,64,107,.30);
+    }
+
+    /* -------------------------
+       footer / контакты
+       ------------------------- */
+    footer{
+      padding: 54px 0 64px;
+      border-top: 1px solid var(--stroke);
+      background: #fff;
+    }
+    .contact-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+    }
+    @media (max-width: 980px){
+      .contact-grid{ grid-template-columns: 1fr; }
+    }
+    .contact-box{
+      border: 1px solid var(--stroke);
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      padding: 18px;
+    }
+    .contact-box h4{
+      margin:0 0 8px;
+      font-weight: 500;
+      letter-spacing:-0.02em;
+      color: var(--c-navy);
+      font-family: var(--font-title);
+    }
+    .contact-box p{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-weight: 400;
+      font-family: var(--font);
+    }
+    .contact-list{
+      margin-top: 12px;
+      display:grid;
+      gap: 10px;
+    }
+    .contact-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 12px 12px;
+      border: 1px solid rgba(43,64,107,.16);
+      background: #fff;
+      font-weight: 400;
+      color: var(--c-navy);
+      font-family: var(--font);
+    }
+    .contact-item span{
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    /* Текст в ABOUT — красивый набор */
+    .about-text p{
+      text-align: justify;           /* по ширине */
+      text-justify: inter-word;
+      hyphens: auto;                 /* переносы */
+      -webkit-hyphens: auto;
+      line-height: 1.75;
+      letter-spacing: 0.01em;
+      max-width: 75ch;               /* чтобы строка не была слишком длинной */
+    }
+
+    /* Чтобы не было “пустого места” в карточке */
+    .about-card{
+      align-items: start;            /* важно: не растягиваем по высоте */
+    }
+
+    /* Фото подстраивается под контент, без лишней высоты */
+    .about-media{
+      display: flex;
+      align-items: flex-start;
+    }
+    .about-media img{
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    /* Чуть компактнее отступы в блоке текста (если нужно) */
+    .about-text{
+      padding: 60px;
+    }
+
+    .about-media:not(.about-media--two){
+      align-self: stretch;
+    }
+
+    .about-media:not(.about-media--two) img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* заполняет блок, пустоты не будет */
+      display: block;
+    }
+
+  </style>
+</head>
+
+<body id="top">
+  <header class="hero" aria-label="Шапка сайта">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="hero__overlay" aria-hidden="true"></div>
+
+    <div class="container">
+      <div class="hero__wrap">
+        <div class="hero__brand" aria-label="Логотип">
+          <div class="hero__logo">
+            <img src="assets/logo2.png" alt="Логотип">
+          </div>
+        </div>
+
+        <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <aside class="menu-panel" id="menuPanel" aria-label="Меню сайта" data-open="false">
+    <button class="menu-item" type="button" data-goto="#about">
+      <span class="menu-title">О проекте</span>
+    </button>
+
+    <div class="menu-sep"></div>
+
+    <button class="menu-item" type="button" id="tracksToggle" aria-expanded="false">
+      <span class="menu-title">Улицы острова</span>
+      <span class="menu-hint">маршруты</span>
+    </button>
+
+    <div class="submenu" id="tracksSubmenu" data-open="false">
+      <a href="#track-main">
+        <span class="menu-title" style="display:flex;align-items:center;gap:10px;">
+          <img class="track-icon" src="assets/logo-wood.png" alt=""> Трек "Огибая Остров"
+        </span>
+      </a>
+      <a href="#track-nature">
+        <span class="menu-title" style="display:flex;align-items:center;gap:10px;">
+          <img class="track-icon" src="assets/logo-blue.png" alt=""> Трек "Природа"
+        </span>
+      </a>
+      <a href="#track-history">
+        <span class="menu-title" style="display:flex;align-items:center;gap:10px;">
+          <img class="track-icon" src="assets/logo-navy.png" alt=""> Трек "История"
+        </span>
+      </a>
+      <a href="#track-promka">
+        <span class="menu-title" style="display:flex;align-items:center;gap:10px;">
+          <img class="track-icon" src="assets/logo-red.png" alt=""> Трек "Промка"
+        </span>
+      </a>
+    </div>
+
+    <div class="menu-sep"></div>
+
+    <button class="menu-item" type="button" data-goto="#amphitheater">
+      <span class="menu-title">Амфитеатр</span>
+      <span class="menu-hint">большая горная тропа</span>
+    </button>
+
+    <button class="menu-item" type="button" data-goto="#other">
+      <span class="menu-title">Другие проекты</span>
+    </button>
+
+    <button class="menu-item" type="button" data-goto="#credits">
+      <span class="menu-title">Над проектом работали</span>
+    </button>
+
+    <button class="menu-item" type="button" data-goto="#contacts">
+      <span class="menu-title">Контактная информация</span>
+    </button>
+  </aside>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">О проекте «Остров Дудергоф»</h2>
+          <p class="section__desc">Проект "Остров Дудергоф"</p>
+        </div>
+      </div>
+
+      <article class="card about-card" aria-label="Как устроено?" style="margin-top:18px;">
+        <div class="about-text">
+          <h4>Как устроено?</h4>
+          <p>
+            Основной круговой маршрут + три трека (Промка / История / Природа),
+            которые помогают «читать» место по-разному.
+          </p>
+        </div>
+        <div class="about-media" aria-label="Фото 3">
+          <img src="assets/photo3.jpg" alt="Фото 3">
+        </div>
+      </article>
+
+            <article class="card about-card" aria-label="Где это?">
+        <div class="about-text">
+          <h4>Где это?</h4>
+          <p>
+            Наш проект охватывает южную часть Ленинградской области — территорию Пулковских и Дудергофских высот, лежащую между Павловском и Пушкиным, Красным Селом и Можайским.
+Это редкий для северо-запада России холмистый ландшафт, где равнина внезапно поднимается волнами, формируя естественный амфитеатр над окрестностями Санкт-Петербурга.
+Высоты вытянуты дугой с запада на восток и образуют природный рубеж между городской застройкой и открытыми пространствами области. Отсюда, с возвышенных точек, раскрываются дальние панорамы: лесные массивы сменяются полями, дороги растворяются в рельефе, а линия горизонта становится ощутимо шире.
+
+Пулковские и Дудергофские холмы задают вертикаль этому пейзажу — редкую, выразительную, почти горную по ощущениям. Они связывают между собой исторические пригороды и природные территории, создавая цельное пространство, где город остаётся внизу, а над ним начинается тишина и воздух.
+
+Это место на границе: между городом и областью, между равниной и возвышенностью, между повседневным маршрутом и пространством созерцания.
+          </p>
+        </div>
+        <div class="about-media about-media--two" aria-label="Фото локации">
+          <img src="assets/photo3.jpg" alt="Фото 1">
+        </div>
+      </article>
+      
+    </div>
+  </section>
+
+  <!-- ROUTE IMAGE -->
+  <section id="route" style="padding-top: 0;">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Основной маршрут</h2>
+          <p class="section__desc">
+            Здесь — место под ключевое изображение маршрута (схема / фото / постер).
+          </p>
+        </div>
+      </div>
+
+      <article class="card" aria-label="Фото основного маршрута">
+        <div class="media">
+          <img src="assets/pomenyat.png" alt="Основной маршрут — изображение/схема">
+        </div>
+        <div class="card__body">
+          <h4>Кольцо, которое можно «нарезать»</h4>
+          <p>
+            Пройдите круг целиком или выберите кусок под время и настроение.
+            Ниже — быстрый выбор трека.
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- TRACKS -->
+  <section id="tracks">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Треки</h2>
+        </div>
+      </div>
+
+      <div class="tracks">
+        <a class="track track--main" href="#track-main" aria-label="Перейти к основному маршруту">
+          <div class="track__top">
+            <h3 class="track__name">Огибая остров</h3>
+            <div class="track__mark"><img src="assets/logo-wood.png" alt=""></div>
+          </div>
+        </a>
+
+        <a class="track track--promka" href="#track-promka" aria-label="Перейти к треку Промка">
+          <div class="track__top">
+            <h3 class="track__name">Трек <br>Промка</h3>
+            <div class="track__mark"><img src="assets/logo-red.png" alt=""></div>
+          </div>
+        </a>
+
+        <a class="track track--history" href="#track-history" aria-label="Перейти к треку История">
+          <div class="track__top">
+            <h3 class="track__name">Трек <br>История</h3>
+            <div class="track__mark"><img src="assets/logo-navy.png" alt=""></div>
+          </div>
+        </a>
+
+        <a class="track track--nature" href="#track-nature" aria-label="Перейти к треку Природа">
+          <div class="track__top">
+            <h3 class="track__name">Трек <br>Природа</h3>
+            <div class="track__mark"><img src="assets/logo-blue.png" alt=""></div>
+          </div>
+        </a>
+      </div>
+
+      <p class="tracks-desc-under">
+        Нажмите на карточку — переход к разделу трека (пока это якоря, потом можно заменить на отдельные страницы).
+      </p>
+    </div>
+  </section>
+
+  <!-- TRACK SECTIONS (заготовки) -->
+  <section id="track-main" style="padding-top: 10px;">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Трек "Вокруг Острова"</h2>
+          <p class="section__desc">Короткое описание. Здесь можно будет добавить карту, точки и фото.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card"><div class="card__body"><h4>Точки входа</h4><p>Добавьте 2–4 удобных старта, парковки/остановки, навигацию.</p></div></div>
+        <div class="card"><div class="card__body"><h4>Сценарий прогулки</h4><p>Кому подходит, сколько времени, что важно увидеть.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="track-nature" style="padding-top: 10px;">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Трек «Природа»</h2>
+          <p class="section__desc">Ландшафты, рельеф, лес, тихие точки, панорамы.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card"><div class="card__body"><h4>Видовые точки</h4><p>Смотровые, места отдыха, «кадры» маршрута.</p></div></div>
+        <div class="card"><div class="card__body"><h4>Бережная прогулка</h4><p>Правила, сезонность, аккуратная инфраструктура.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="track-history" style="padding-top: 10px;">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Трек «История»</h2>
+          <p class="section__desc">Исторический слой: памятные места, хроника, маршруты прошлого.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card"><div class="card__body"><h4>Сюжеты</h4><p>Какие истории «держат» трек, как их рассказывать в точках.</p></div></div>
+        <div class="card"><div class="card__body"><h4>Постеры / навигация</h4><p>Место под графику, ссылки на материалы, архивы.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="track-promka" style="padding-top: 10px;">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Трек «Промка»</h2>
+          <p class="section__desc">Индустриальный слой: инфраструктура, материалы, границы, видовые точки.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card"><div class="card__body"><h4>Ключевые объекты</h4><p>Список объектов/фрагментов, которые показывают «промку».</p></div></div>
+        <div class="card"><div class="card__body"><h4>Маркировка</h4><p>Как обозначать трек на местности и в навигации.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AMPHITHEATER -->
+  <section id="amphitheater">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Амфитеатр</h2>
+          <p class="section__desc">Блок под фото и текст: что это, где находится, как использовать.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="media">
+          <img src="assets/amphitheater.jpg" alt="Амфитеатр — фото">
+        </div>
+        <div class="card__body">
+          <h4>Место встречи и события</h4>
+          <p>
+            Здесь можно описать формат: сцена/видовая площадка/место отдыха,
+            а также добавить расписание или ссылку на анонсы.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OTHER PROJECTS -->
+  <section id="other">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Другие проекты</h2>
+          <p class="section__desc">Секторы, которые связаны с вашим большим проектом.</p>
+        </div>
+      </div>
+
+      <div class="projects" role="list">
+        <button class="pill" type="button" role="listitem">Лемболовский сектор</button>
+        <button class="pill" type="button" role="listitem">Колтушский сектор</button>
+        <a class="pill pill--active" href="#top" role="listitem" aria-label="Вернуться в начало (Дудергофский сектор)">
+          Дудергофский сектор
+        </a>
+      </div>
+    </div>
+  </section>
+
+    <!-- CREDITS / TEAM -->
+  <section id="credits" aria-label="Над проектом работали">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Над проектом работали</h2>
+        </div>
+      </div>
+
+      <div class="credits-row">
+        <figure class="credit">
+          <img src="assets/name1.png" alt="ментор - Никифор Анцулевич">
+          <figcaption>Анцулевич Никифор<br>Ментор</figcaption>
+        </figure>
+
+        <figure class="credit">
+          <img src="assets/name2.png" alt="Имя - должность">
+          <figcaption>Никитин Виталий<br>ЕУСПБ, Антропология</figcaption>
+        </figure>
+
+        <figure class="credit">
+          <img src="assets/name3.png" alt="Имя - должность">
+          <figcaption>Донскова Алёна<br>СПБГАСУ, Архитектура</figcaption>
+        </figure>
+
+        <figure class="credit">
+          <img src="assets/name4.png" alt="Имя - должность">
+          <figcaption>Важенина София<br>НИУ ВШЭ, Политология</figcaption>
+        </figure>
+
+        <figure class="credit">
+          <img src="assets/name5.png" alt="Имя - должность">
+          <figcaption>Ходыкина Полина<br>ИТМО, Дизайн городской среды</figcaption>
+        </figure>
+
+        <figure class="credit">
+          <img src="assets/name6.png" alt="Имя - должность">
+          <figcaption>Дурыничева Лидия<br>СПБГАСУ, Дизайн архитектурной среды</figcaption>
+        </figure>
+
+        <figure class="credit">
+          <img src="assets/name7.png" alt="Имя - должность">
+          <figcaption>Зайкова Виктория<br>ИТМО, Цифровая урбанистика</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTS (простые строки внизу + 2 лого по центру) -->
+  <footer id="contacts">
+    <div class="container">
+      <div class="section__head" style="margin-bottom: 8px;">
+        <div>
+          <h2 class="section__title">Контактная информация</h2>
+        </div>
+      </div>
+
+      <div class="contacts-simple" aria-label="Контакты">
+        <div>Email общий — <a href="mailto:amphiteatre_spb@domain.ru">amphiteatre_spb@domain.ru</a></div>
+        <div>Email сектора — <a href="mailto:dudh_amph-spb@domain.ru">dudh_amph-spb@domain.ru</a></div>
+        <div>TG — <a href="https://t.me/ostrov_dudergof" target="_blank" rel="noopener">@ostrov_dudergof</a></div>
+      </div>
+
+      <div class="contacts-logos" aria-label="Логотипы">
+        <img src="assets/logo-ostrov.png" alt="Логотип Остров">
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const burger = document.getElementById('burger');
+    const panel = document.getElementById('menuPanel');
+
+    const tracksToggle = document.getElementById('tracksToggle');
+    const tracksSubmenu = document.getElementById('tracksSubmenu');
+
+    function openMenu(){
+      panel.dataset.open = "true";
+      burger.setAttribute('aria-expanded', 'true');
+    }
+    function closeMenu(){
+      panel.dataset.open = "false";
+      burger.setAttribute('aria-expanded', 'false');
+      tracksSubmenu.dataset.open = "false";
+      tracksToggle?.setAttribute('aria-expanded','false');
+    }
+    function toggleMenu(){
+      const isOpen = panel.dataset.open === "true";
+      if(isOpen) closeMenu(); else openMenu();
+    }
+
+    burger?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    tracksToggle?.addEventListener('click', () => {
+      const isOpen = tracksSubmenu.dataset.open === "true";
+      tracksSubmenu.dataset.open = String(!isOpen);
+      tracksToggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    panel?.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-goto]');
+      if(btn){
+        const id = btn.getAttribute('data-goto');
+        const el = document.querySelector(id);
+        el?.scrollIntoView({behavior:'smooth', block:'start'});
+        closeMenu();
+      }
+
+      const a = e.target.closest('a');
+      if(a && a.getAttribute('href')?.startsWith('#')){
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if(panel.dataset.open !== "true") return;
+      const inside = panel.contains(e.target) || burger.contains(e.target);
+      if(!inside) closeMenu();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeMenu();
+    });
+  </script>
+</body>
+</html>
