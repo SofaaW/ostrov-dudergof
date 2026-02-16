@@ -900,6 +900,41 @@
       text-align: justify;
       hyphens: auto;
     }
+    /* ===== "Как устроено?" — фото сверху, текст снизу, без обрезки ===== */
+    .about-card--stack{
+      display: flex;            /* перебиваем grid на flex */
+      flex-direction: column;
+      gap: 0;                   /* чтобы не было щели между фото и текстом */
+    }
+    
+    /* фото наверху */
+    .about-card--stack .about-media{
+      order: 1;
+      border-left: 0;           /* убираем вертикальную линию (она была для "справа") */
+      border-bottom: 1px solid var(--stroke);
+      align-self: stretch;
+      display: block;
+    }
+    
+    /* изображение НЕ обрезаем */
+    .about-card--stack .about-media img{
+      width: 100%;
+      height: auto;
+      object-fit: contain;      /* ключевое: НЕ cover */
+      display: block;
+    }
+    
+    /* текст внизу */
+    .about-card--stack .about-text{
+      order: 2;
+    }
+    
+    /* мобильная версия: чуть компактнее отступы текста */
+    @media (max-width: 600px){
+      .about-card--stack .about-text{
+        padding: 20px;
+      }
+    }
 
   </style>
 </head>
@@ -989,8 +1024,7 @@
           <p class="section__desc">Проект "Остров Дудергоф"</p>
         </div>
       </div>
-
-      <article class="card about-card" aria-label="Как устроено?" style="margin-top:18px;">
+      <article class="card about-card about-card--stack" aria-label="Как устроено?" style="margin-top:18px;">
         <div class="about-text">
           <h4>Как устроено?</h4>
           <p>
@@ -1414,6 +1448,7 @@
   </script>
 </body>
 </html>
+
 
 
 
