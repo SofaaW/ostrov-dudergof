@@ -778,6 +778,42 @@
       display: block;
     }
 
+    /* ===== Mobile fix ===== */
+@media (max-width: 600px){
+
+    /* Шапка: логотип становится компактным, бургер не теряется */
+    .hero__wrap{
+      align-items: center;
+      padding-top: 14px;
+      gap: 12px;
+    }
+  
+    .hero__brand{
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  
+    .hero__logo{
+      width: 180px;     /* было минимум 360px */
+      height: 180px;
+    }
+  
+    /* Кнопка меню всегда видна и кликабельна */
+    .burger{
+      flex: 0 0 auto;
+      z-index: 200; /* выше, чем панель */
+    }
+  
+    /* Меню: приклеиваем к правому краю, не "уезжает" */
+    .menu-panel{
+      top: calc(12px + env(safe-area-inset-top));
+      right: 12px;
+      left: 12px;              /* чтобы занимало всю ширину с полями */
+      width: auto;
+      max-height: calc(100vh - 24px - env(safe-area-inset-top));
+    }
+  }
+
   </style>
 </head>
 
