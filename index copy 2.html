@@ -943,6 +943,42 @@
         letter-spacing: 0;
       }
     }
+        /* ===== "Как устроено?" (about-card--stack): фото компактнее + текст шире на ПК ===== */
+    
+    /* 1) Фото делаем "меньше": добавляем внутренние поля и ограничиваем размер картинки */
+    .about-card--stack .about-media{
+      padding: 18px;                 /* рамка вокруг фото */
+      background: #fff;              /* чтобы рамка была чистой */
+      border-bottom: 1px solid var(--stroke);
+    }
+    
+    .about-card--stack .about-media img{
+      width: 100%;
+      max-width: 820px;              /* <= регулируй "формат" фото (например 720–900px) */
+      max-height: 420px;             /* <= чтобы не занимало пол экрана */
+      height: auto;
+      margin: 0 auto;                /* центр */
+      object-fit: contain;           /* не обрезаем */
+      display: block;
+    }
+    
+    /* 2) На ПК текст не "пол-листа": снимаем max-width только в этом блоке */
+    @media (min-width: 981px){
+      .about-card--stack .about-text p{
+        max-width: none;             /* перебиваем max-width: 75ch */
+      }
+    }
+    
+    /* 3) Мобилка: оставляем как было "адекватно", но уменьшим поля, чтобы всё помещалось */
+    @media (max-width: 600px){
+      .about-card--stack .about-media{
+        padding: 12px;
+      }
+      .about-card--stack .about-media img{
+        max-height: 320px;
+      }
+    }
+
 
   </style>
 </head>
@@ -1482,6 +1518,7 @@
   </script>
 </body>
 </html>
+
 
 
 
