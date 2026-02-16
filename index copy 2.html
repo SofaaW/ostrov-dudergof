@@ -821,6 +821,20 @@
     z-index: 999; /* обязательно */
   }
 }
+    /* Амфитеатр: блок подстраивается под фото (без обрезки) */
+  #amphitheater .media{
+    aspect-ratio: auto;   /* выключаем 16/10 */
+    height: auto;
+    overflow: visible;    /* можно оставить hidden, но visible честнее */
+  }
+  
+  #amphitheater .media img{
+    width: 100%;
+    height: auto;         /* главное: авто-высота */
+    object-fit: unset;    /* убираем cover */
+    transform: none;      /* убираем scale(1.02), он подрезает края */
+  }
+
   </style>
 </head>
 
@@ -1247,6 +1261,7 @@
   </script>
 </body>
 </html>
+
 
 
 
