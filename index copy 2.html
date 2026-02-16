@@ -22,7 +22,7 @@
       font-family: "Intro";
       src: url("assets/fonts/Intro-Regular.woff2") format("woff2");
       font-weight: 400;
-      font-style: normal;
+      font-: normal;
       font-display: swap;
     }
 
@@ -834,6 +834,22 @@
     object-fit: unset;    /* убираем cover */
     transform: none;      /* убираем scale(1.02), он подрезает края */
   }
+    /* Амфитеатр: уменьшенный формат фото, без обрезки */
+  #amphitheater .media{
+    aspect-ratio: auto;
+    height: auto;
+    padding: 24px;              /* создаём «рамку» */
+    background: #fff;           /* фон карточки */
+  }
+  
+  #amphitheater .media img{
+    width: 100%;
+    max-width: 820px;           /* ← КЛЮЧЕВО: ограничиваем размер */
+    height: auto;
+    margin: 0 auto;             /* центрируем */
+    object-fit: unset;
+    transform: none;
+  }
 
   </style>
 </head>
@@ -872,17 +888,17 @@
 
     <div class="submenu" id="tracksSubmenu" data-open="false">
       <a href="#track-main">
-        <span class="menu-title" style="display:flex;align-items:center;gap:10px;">
+        <span class="menu-title" ="display:flex;align-items:center;gap:10px;">
           <img class="track-icon" src="assets/logo-wood.png" alt=""> Трек "Огибая Остров"
         </span>
       </a>
       <a href="#track-nature">
-        <span class="menu-title" style="display:flex;align-items:center;gap:10px;">
+        <span class="menu-title" ="display:flex;align-items:center;gap:10px;">
           <img class="track-icon" src="assets/logo-blue.png" alt=""> Трек "Природа"
         </span>
       </a>
       <a href="#track-history">
-        <span class="menu-title" style="display:flex;align-items:center;gap:10px;">
+        <span class="menu-title" ="display:flex;align-items:center;gap:10px;">
           <img class="track-icon" src="assets/logo-navy.png" alt=""> Трек "История"
         </span>
       </a>
@@ -1261,6 +1277,7 @@
   </script>
 </body>
 </html>
+
 
 
 
